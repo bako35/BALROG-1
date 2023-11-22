@@ -5,3 +5,5 @@ This is plugin AMXX Balrog-1 to Counter Strike 1.6
 * balrog1_secondary_radius "75.0" // Secondary attack radius. Default: 75.0
 # Video Presentation
 https://youtu.be/YzvM4IJVssY
+# Wiki Presentation
+https://cso.fandom.com/wiki/BALROG-I
