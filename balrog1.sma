@@ -24,7 +24,7 @@ new const g_shootsound2[] = "weapons/balrog1-2.wav"
 new const gunshut_decals[] = {41, 42, 43, 44, 45}
 
 public plugin_init() {
-	register_plugin("Balrog-1", "1.0", "bako35");
+	register_plugin("Balrog-1", "1.1", "bako35");
 	register_clcmd("say /balrog1", "give_balrog1");
 	register_clcmd("bakoweapon_balrog1", "HookWeapon");
 	register_event("CurWeapon", "replace_models", "be", "1=1");
@@ -246,11 +246,10 @@ public UTIL_Explode(id){
 			continue
 		}
 		set_msg_block(g_death, BLOCK_SET);
-		fakedamage(victim, "", get_pcvar_float(cvar_balrog1sec_damage), DMG_BURN);
+		ExecuteHam(Ham_TakeDamage, victim, 0, id, get_pcvar_float(cvar_balrog1sec_damage), DMG_BURN);
 		set_msg_block(g_death, BLOCK_NOT);
 		if(get_user_health(victim) <= 0){
 			SendDeathMsg(id, victim);
-			UpdateFrags(id, 1, 1);
 		}
 	}
 }
@@ -373,24 +372,6 @@ stock SendDeathMsg(attacker, victim){ // Sends death message
 	write_byte(0) // headshot flag
 	write_string("deagle") // killer's weapon
 	message_end()
-}
-
-stock UpdateFrags(attacker, frags, scoreboard) // Updates attacker frags
-{
-	// Set attacker frags
-	set_pev(attacker, pev_frags, float(pev(attacker, pev_frags) + frags))
-		
-	// Update scoreboard with attacker and victim info
-	if (scoreboard)
-	{
-		message_begin(MSG_BROADCAST, g_score)
-		write_byte(attacker) // id
-		write_short(pev(attacker, pev_frags)) // frags
-		write_short(get_user_deaths(attacker)) // deaths
-		write_short(0) // class?
-		write_short(get_user_team(attacker)) // team
-		message_end()
-	}
 }
 
 stock UTIL_WeaponList(id, const bool: bEnabled)
